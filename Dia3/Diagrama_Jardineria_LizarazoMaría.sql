@@ -945,7 +945,6 @@ SELECT DISTINCT estado FROM pedido; -- DISTINCT elimina los valores repetidos de
 
 -- Devuelve un listado con el código de cliente de aquellos clientes que realizaron algún pago en 2008. 
 -- Tenga en cuenta que deberá eliminar aquellos códigos de cliente que aparezcan repetidos. Resuelva la consulta:
-
 -- Utilizando la función YEAR de MySQL.
 SELECT DISTINCT codigo_cliente FROM pago WHERE YEAR(fecha_pago) = 2008;
 
@@ -961,8 +960,11 @@ SELECT codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega FROM pedido 
 
 -- Devuelve un listado con el código de pedido, código de cliente, fecha esperada y fecha de entrega de los pedidos cuya fecha de entrega ha sido al menos dos días antes de la fecha esperada.
 -- Utilizando la función ADDDATE de MySQL.
+select codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega from pedido where fecha_entrega <= adddate(fecha_esperada, -2);
 -- Utilizando la función DATEDIFF de MySQL.
+select codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega from pedido where DATEDIFF(fecha_esperada, fecha_entrega) >= 2;
 -- ¿Sería posible resolver esta consulta utilizando el operador de suma + o resta -?
+select codigo_pedido, codigo_cliente, fecha_esperada, fecha_entrega from pedido where fecha_entrega <= fecha_esperada - INTERVAL 2 DAY;
 
 -- Devuelve un listado de todos los pedidos que fueron en 2009.
 SELECT * FROM pedido WHERE YEAR(fecha_pedido) = 2009;
@@ -978,6 +980,9 @@ SELECT * FROM pago WHERE YEAR(fecha_pago)=2008 AND forma_pago='PayPal' ORDER BY 
 -- Tenga en cuenta que no deben aparecer formas de pago repetidas
 SELECT DISTINCT forma_pago FROM pago;
 
--- Devuelve un listado con todos los productos que pertenecen a la gama Ornamentales y que tienen más de 100 unidades en stock. El listado deberá estar ordenado por su precio de venta, mostrando en primer lugar los de mayor precio.
+-- Devuelve un listado con todos los productos que pertenecen a la gama Ornamentales y que tienen más de 100 unidades en stock. 
+-- El listado deberá estar ordenado por su precio de venta, mostrando en primer lugar los de mayor precio.
+select nombre, precio_venta from producto where gama = 'Ornamentales' AND cantidad_en_stock >= 100 ORDER BY precio_venta DESC;
 
 -- Devuelve un listado con todos los clientes que sean de la ciudad de Madrid y cuyo representante de ventas tenga el código de empleado 11 o 30.
+select nombre_cliente, ciudad, codigo_empleado_rep_ventas from cliente where ciudad = 'Madrid' AND codigo_empleado_rep_ventas = '11' or codigo_empleado_rep_ventas = '30';

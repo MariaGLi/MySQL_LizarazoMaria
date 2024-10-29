@@ -66,14 +66,14 @@ FOREIGN KEY (gama) REFERENCES gama_producto(gama)
 );
 
 CREATE TABLE pedido (
-    codigo_pedido INT PRIMARY KEY AUTO_INCREMENT,
-    fecha_pedido DATE NOT NULL,
-    fecha_esperada DATE NOT NULL,
-    fecha_entrega DATE,
-    estado VARCHAR(15) NOT NULL,
-    comentarios TEXT,
-    codigo_cliente INT NOT NULL,
-    FOREIGN KEY (codigo_cliente) REFERENCES cliente(codigo_cliente)
+codigo_pedido INT PRIMARY KEY AUTO_INCREMENT,
+fecha_pedido DATE NOT NULL,
+fecha_esperada DATE NOT NULL,
+fecha_entrega DATE,
+estado VARCHAR(15) NOT NULL,
+comentarios TEXT,
+codigo_cliente INT NOT NULL,
+FOREIGN KEY (codigo_cliente) REFERENCES cliente(codigo_cliente)
 );
 
 CREATE TABLE detalle_pedido (

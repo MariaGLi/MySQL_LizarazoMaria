@@ -62,7 +62,9 @@ left join profesor p on d.id = p.id_departamento group by 1 order by Cantidad_pr
 -- Estos grados también tienen que aparecer en el listado. El resultado deberá estar ordenado de mayor a menor por 
 -- el número de asignaturas.
 
-select * from grado;
+select g.id as Id_Grado, ag.id as Id_Asignatura, g.nombre, ag.nombre from grado g
+inner join asignatura ag on g.id = ag.id_grado
+order by 2 desc;
 
 -- Devuelve un listado con el nombre de todos los grados existentes en la base de datos y el número de 
 -- asignaturas que tiene cada uno, de los grados que tengan más de 40 asignaturas asociadas.

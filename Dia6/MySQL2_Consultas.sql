@@ -77,16 +77,95 @@ inner join asignatura ag  on g.id = ag.id_grado group by 1 having count(2) > 40;
 -- tipo de asignatura y la suma de los créditos de todas las asignaturas que hay de ese tipo. Ordene el 
 -- resultado de mayor a menor por el número total de crédidos.
 
-select g.nombre, ag.tipo, count(ag.creditos) from grado g
-inner join asignatura ag group by 1,2 order by 3 desc;
-
+select g.nombre, ag.tipo, sum(ag.creditos) as Total_creditos from grado g
+inner join asignatura ag on g.id = ag.id_grado group by 1,2 order by 3 desc;
 
 -- Devuelve un listado que muestre cuántos alumnos se han matriculado de alguna asignatura en cada uno 
 -- de los cursos escolares. El resultado deberá mostrar dos columnas, una columna con el año de inicio 
 -- del curso escolar y otra con el número de alumnos matriculados.
 
+select * from alumno;
+select ce.anyo_inicio, count(al.nombre) as Cantidad_alumnos from alumno al 
+inner join curso_escolar ce group by 1;
 
 -- Devuelve un listado con el número de asignaturas que imparte cada profesor. El listado debe tener en 
 -- cuenta aquellos profesores que no imparten ninguna asignatura. El resultado mostrará cinco columnas: 
 -- id, nombre, primer apellido, segundo apellido y número de asignaturas. El resultado estará ordenado
 -- de mayor a menor por el número de asignaturas.
+
+select p.id, p.nombre, p.apellido1, p.apellido2, count(ag.nombre) from profesor p
+left join asignatura ag on p.id = ag.id_profesor
+group by 1 order by 5 desc;
+
+-- Devuelve todos los datos del alumno más joven.
+
+select * from alumno order by fecha_nacimiento desc limit 1;
+
+-- Devuelve un listado con los profesores que no están asociados a un departamento.
+
+select * from profesor p inner join departamento d on p.id_departamento = d.id where p.id_departamento is null;
+
+-- Devuelve un listado con los departamentos que no tienen profesores asociados.
+
+select * from departamento d left join profesor p
+on d.id = p.id_departamento where p.id_departamento is null;
+
+-- Devuelve un listado con los profesores que tienen un departamento asociado y que no imparten ninguna asignatura.
+
+select * from profesor p 
+inner join departamento d on p.id_departamento = d.id
+inner join asignatura ag on p.id = ag.id_profesor
+where ag.id_profesor is null;
+
+select * from profesor p 
+left join asignatura ag on ag.id_profesor = p.id where ag.id_profesor is null;
+
+-- Devuelve un listado con las asignaturas que no tienen un profesor asignado.
+
+select * from asignatura ag 
+left join profesor p on ag.id_profesor = p.id where ag.id_profesor is null;
+
+select * from asignatura ag 
+where ag.id_profesor is null;
+
+-- Devuelve un listado con todos los departamentos que no han impartido asignaturas en ningún curso escolar.
+
+
+
+-- Devuelve un listado con el nombre de todos los departamentos que tienen profesores que imparten alguna 
+-- asignatura en el Grado en Ingeniería Informática (Plan 2015).
+
+select d.nombre from departamentos
+inner join asignatura ag ;
+
+-- Devuelve un listado con los nombres de todos los profesores y los departamentos que tienen vinculados. 
+-- El listado también debe mostrar aquellos profesores que no tienen ningún departamento asociado. 
+-- El listado debe devolver cuatro columnas, nombre del departamento, primer apellido, segundo apellido 
+-- y nombre del profesor. El resultado estará ordenado alfabéticamente de menor a mayor por el nombre del 
+-- departamento, apellidos y el nombre.
+
+
+
+-- Devuelve un listado con los profesores que no están asociados a un departamento.
+
+
+
+-- Devuelve un listado con los departamentos que no tienen profesores asociados.
+
+select * from departamento d left join profesor p
+on d.id = p.id_departamento where p.id_departamento is null;
+
+-- Devuelve un listado con los profesores que no imparten ninguna asignatura.
+
+select * from profesor p 
+left join asignatura ag on ag.id_profesor = p.id where ag.id_profesor is null;
+
+-- Devuelve un listado con las asignaturas que no tienen un profesor asignado.
+
+select * from asignatura ag 
+left join profesor p on ag.id_profesor = p.id where ag.id_profesor is null;
+
+-- Devuelve un listado con todos los departamentos que tienen alguna asignatura que no se haya 
+-- impartido en ningún curso escolar. El resultado debe mostrar el nombre del departamento y el 
+-- nombre de la asignatura que no se haya impartido nunca.
+

@@ -62,18 +62,23 @@ left join profesor p on d.id = p.id_departamento group by 1 order by Cantidad_pr
 -- Estos grados también tienen que aparecer en el listado. El resultado deberá estar ordenado de mayor a menor por 
 -- el número de asignaturas.
 
-select g.id as Id_Grado, ag.id as Id_Asignatura, g.nombre, ag.nombre from grado g
-inner join asignatura ag on g.id = ag.id_grado
-order by 2 desc;
+select g.nombre, count(ag.nombre) as Conteo_Asignaturas from grado g
+left join asignatura ag on g.id = ag.id_grado
+group by 1 order by 2 desc;
 
 -- Devuelve un listado con el nombre de todos los grados existentes en la base de datos y el número de 
 -- asignaturas que tiene cada uno, de los grados que tengan más de 40 asignaturas asociadas.
 
+select g.nombre, count(ag.nombre) as Conteo_Asignaturas from grado g
+inner join asignatura ag  on g.id = ag.id_grado group by 1 having count(2) > 40;
 
 -- Devuelve un listado que muestre el nombre de los grados y la suma del número total de créditos 
 -- que hay para cada tipo de asignatura. El resultado debe tener tres columnas: nombre del grado, 
 -- tipo de asignatura y la suma de los créditos de todas las asignaturas que hay de ese tipo. Ordene el 
 -- resultado de mayor a menor por el número total de crédidos.
+
+select g.nombre, ag.tipo, count(ag.creditos) from grado g
+inner join asignatura ag group by 1,2 order by 3 desc;
 
 
 -- Devuelve un listado que muestre cuántos alumnos se han matriculado de alguna asignatura en cada uno 

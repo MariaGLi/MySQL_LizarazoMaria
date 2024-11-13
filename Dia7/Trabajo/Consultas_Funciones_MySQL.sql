@@ -53,9 +53,20 @@ select id, substring(nif, 1, 8) as Nif_Números, substring(nif, 9, 1) as Nif_Car
 
 select nombre, (presupuesto - gastos)  as Presupuesto_Actual  from departamento;
 
+DELIMITER //
+CREATE FUNCTION Presupuesto_Actual (presupuesto DOUBLE, gastos DOUBLE)
+RETURNS DOUBLE DETERMINISTIC
+BEGIN
+	DECLARE Total DOUBLE;
+    SET Total = presupuesto - gastos;
+    RETURN Total;
+END //
+DELIMITER ;
+select nombre, Presupuesto_Actual(presupuesto, gastos)  as Presupuesto_Actual  from departamento; 
+
 -- 12. Lista el nombre de los departamentos y el valor del presupuesto actual ordenado de forma ascendente.
 
-select nombre, presupuesto from departamento order by 2 asc;
+select nombre, (presupuesto - gastos)  as Presupuesto_Actual from departamento order by 2 asc;  
 
 -- 13. Lista el nombre de todos los departamentos ordenados de forma ascendente.
 
@@ -302,6 +313,10 @@ inner join departamento d on e.id_departamento = d.id group by 1;
 
 select d.nombre, count(e.id) as Número_Empleados from empleado e 
 right join departamento d on e.id_departamento = d.id group by 1 having count(e.id) > 2;
+
+select d.nombre, COUNT(*) as 'Cantidad'
+from empleado e inner join departamento d on e.id_departamento = d.id
+group by d.nombre having Cantidad > 2;
 
 -- 11. Calcula el número de empleados que trabajan en cada uno de los departamentos. El resultado de esta consulta
 -- también tiene que incluir aquellos departamentos que no tienen ningún empleado asociado.

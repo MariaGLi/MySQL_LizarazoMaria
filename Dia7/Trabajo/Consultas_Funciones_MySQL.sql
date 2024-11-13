@@ -193,8 +193,8 @@ select * from empleado;
 -- El valor del presupuesto actual lo puede calcular restando al valor del presupuesto inicial
 -- (columna presupuesto) el valor de los gastos que ha generado (columna gastos).
 
-select d.id, d.nombre, (d.presupuesto - d.gastos)  as Presupuesto_Actual, e.id_departamento, e.nombre, e.apellido1, e.apellido2,
-e.id_departamento from departamento d inner join empleado e on d.id = e.id_departamento;
+select distinct d.id, d.nombre, (d.presupuesto - d.gastos)  as Presupuesto_Actual, e.id_departamento
+from departamento d inner join empleado e on d.id = e.id_departamento;
 
 -- 5. Devuelve el nombre del departamento donde trabaja el empleado que tiene el nif 38382980M.
 
@@ -202,7 +202,8 @@ select * from empleado e inner join departamento d on e.id_departamento = d.id w
 
 -- 6. Devuelve el nombre del departamento donde trabaja el empleado Pepe Ruiz Santana.
 
-select d.nombre from departamento d inner join empleado e on e.id_departamento = d.id where e.nombre = 'Pepe';
+select d.nombre from departamento d inner join empleado e on e.id_departamento = d.id where e.nombre = 'Pepe'
+and e.apellido1 = 'Ruiz' and e.apellido2 = 'Santana';
 
 -- 7. Devuelve un listado con los datos de los empleados que trabajan en el
 -- departamento de I+D. Ordena el resultado alfabéticamente.
@@ -218,7 +219,98 @@ where d.nombre = 'I+D' or d.nombre = 'Sistemas' or d.nombre = 'Contabilidad' ord
 -- 9. Devuelve una lista con el nombre de los empleados que tienen los
 -- departamentos que no tienen un presupuesto entre 100000 y 200000 euros.
 
-
+select e.nombre, e.apellido1, e.apellido2, d.presupuesto from empleado e
+inner join departamento d on e.id_departamento = d.id where d.presupuesto not between 100000 and 200000;
 
 -- 10. Devuelve un listado con el nombre de los departamentos donde existe algún empleado cuyo segundo 
 -- apellido sea NULL. Tenga en cuenta que no debe mostrar nombres de departamentos que estén repetidos.
+
+select d.nombre, e.apellido2 from departamento d inner join empleado e on d.id = e.id_departamento 
+where e.apellido2 is NULL;
+
+
+-- Consultas multitabla (Composición externa)
+-- 1. Devuelve un listado con todos los empleados junto con los datos de los departamentos donde trabajan.
+-- Este listado también debe incluir los empleados que no tienen ningún departamento asociado.
+
+select * from empleado e left join departamento d on e.id_departamento = d.id;
+
+-- 2. Devuelve un listado donde sólo aparezcan aquellos empleados que no tienen ningún departamento asociado.
+
+select * from empleado e left join departamento d on e.id_departamento = d.id where e.id_departamento is null;
+
+-- 3. Devuelve un listado donde sólo aparezcan aquellos departamentos que no tienen ningún empleado asociado.
+
+select * from empleado e right join departamento d on e.id_departamento = d.id where e.id_departamento is null;
+
+-- 4. Devuelve un listado con todos los empleados junto con los datos de los departamentos donde trabajan. 
+-- El listado debe incluir los empleados que no tienen ningún departamento asociado y los departamentos que no
+-- tienen ningún empleado asociado. Ordene el listado alfabéticamente por el nombre del departamento.
+
+select * from empleado e right join departamento d on e.id_departamento = d.id 
+union
+select * from empleado e left join departamento d on e.id_departamento = d.id order by 8 asc;
+
+-- 5. Devuelve un listado con los empleados que no tienen ningún departamento asociado y los departamentos que 
+-- no tienen ningún empleado asociado. Ordene el listado alfabéticamente por el nombre del departamento.
+
+select * from empleado e right join departamento d on e.id_departamento = d.id where e.id_departamento is null
+union
+select * from empleado e left join departamento d on e.id_departamento = d.id where d.id is null order by 8 asc;
+
+-- Consultas resumen
+-- 1. Calcula la suma del presupuesto de todos los departamentos.
+
+select sum(presupuesto) as Suma_Total_Presupuesto from departamento;
+
+-- 2. Calcula la media del presupuesto de todos los departamentos.
+
+select avg(all presupuesto) as Promedio_Presupuesto from departamento;
+
+-- 3. Calcula el valor mínimo del presupuesto de todos los departamentos.
+
+select min(presupuesto) as Valor_Mínimo_Presupuesto from departamento;
+
+-- 4. Calcula el nombre del departamento y el presupuesto que tiene asignado, del departamento con menor presupuesto.
+
+select presupuesto, nombre from departamento order by 1 asc limit 1;
+
+-- 5. Calcula el valor máximo del presupuesto de todos los departamentos.
+
+select max(presupuesto) as Valor_Máximo_Presupuesto from departamento;
+
+-- 6. Calcula el nombre del departamento y el presupuesto que tiene asignado, del departamento con mayor presupuesto.
+
+select presupuesto, nombre from departamento order by 1 desc limit 1;
+
+-- 7. Calcula el número total de empleados que hay en la tabla empleado.
+
+select count(*) as Número_Total_Empleados from empleado;
+
+-- 8. Calcula el número de empleados que no tienen NULL en su segundo apellido.
+
+select count(*) as Número_Total_Empleados from empleado where apellido2 is not null;
+
+-- 9. Calcula el número de empleados que hay en cada departamento. Tienes que devolver dos columnas, una con el 
+-- nombre del departamento y otra con el número de empleados que tiene asignados.
+
+select d.nombre, count(e.id) as Número_Empleados_Asignados from empleado e 
+inner join departamento d on e.id_departamento = d.id group by 1;
+
+-- 10. Calcula el nombre de los departamentos que tienen más de 2 empleados. El resultado debe tener dos columnas,
+-- una con el nombre del departamento y otra con el número de empleados que tiene asignados.
+
+select d.nombre, count(e.id) as Número_Empleados from empleado e 
+right join departamento d on e.id_departamento = d.id group by 1 having count(e.id) > 2;
+
+-- 11. Calcula el número de empleados que trabajan en cada uno de los departamentos. El resultado de esta consulta
+-- también tiene que incluir aquellos departamentos que no tienen ningún empleado asociado.
+
+select d.nombre, count(e.id) as Número_Empleados_Asignados from empleado e 
+right join departamento d on e.id_departamento = d.id group by 1;
+
+-- 12. Calcula el número de empleados que trabajan en cada unos de los departamentos que tienen un 
+-- presupuesto mayor a 200000 euros.
+
+select count(e.id) as Conteo_Empleados from empleado e inner join departamento d 
+on e.id_departamento = d.id where d.presupuesto > 200000;

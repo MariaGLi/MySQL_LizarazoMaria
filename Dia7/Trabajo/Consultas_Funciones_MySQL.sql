@@ -90,7 +90,7 @@ select nombre, gastos from departamento order by 2 asc limit 2;
 -- 20. Devuelve una lista con 5 filas a partir de la tercera fila de la tabla empleado. La tercera fila
 -- se debe incluir en la respuesta. La respuesta debe incluir todas las columnas de la tabla empleado.
 
-select * from empleado;
+select * from empleado limit 2,5;
 
 -- 21. Devuelve una lista con el nombre de los departamentos y el presupuesto, de
 -- aquellos que tienen un presupuesto mayor o igual a 150000 euros.
@@ -166,3 +166,59 @@ select nombre, apellido1, apellido2, nif from empleado where id_departamento = 3
 -- 36. Lista los nombres, apellidos y nif de los empleados que trabajan en los departamentos 2, 4 o 5.
 
 select nombre, apellido1, apellido2, nif from empleado where id_departamento in (2, 4, 5);
+
+
+-- Consultas multitabla (Composición interna)
+-- 1. Devuelve un listado con los empleados y los datos de los departamentos donde trabaja cada uno.
+
+select e.nombre, e.apellido1, e.apellido2, e.id_departamento, d.id, d.nombre from empleado e
+inner join departamento d on e.id_departamento = d.id;
+
+-- 2. Devuelve un listado con los empleados y los datos de los departamentos donde trabaja cada uno.
+-- Ordena el resultado, en primer lugar por el nombre del departamento (en orden alfabético) y en 
+-- segundo lugar por los apellidos y el nombre de los empleados.
+
+select e.nombre, e.apellido1, e.apellido2, e.id_departamento, d.id, d.nombre from empleado e
+inner join departamento d on e.id_departamento = d.id order by 6 asc;
+
+
+-- 3. Devuelve un listado con el identificador y el nombre del departamento,
+-- solamente de aquellos departamentos que tienen empleados.
+
+select e.id, d.nombre from empleado e inner join departamento d on e.id_departamento = d.id;
+select * from empleado;
+
+-- 4. Devuelve un listado con el identificador, el nombre del departamento y el
+-- valor del presupuesto actual del que dispone, solamente de aquellos departamentos que tienen empleados.
+-- El valor del presupuesto actual lo puede calcular restando al valor del presupuesto inicial
+-- (columna presupuesto) el valor de los gastos que ha generado (columna gastos).
+
+select d.id, d.nombre, (d.presupuesto - d.gastos)  as Presupuesto_Actual, e.id_departamento, e.nombre, e.apellido1, e.apellido2,
+e.id_departamento from departamento d inner join empleado e on d.id = e.id_departamento;
+
+-- 5. Devuelve el nombre del departamento donde trabaja el empleado que tiene el nif 38382980M.
+
+select * from empleado e inner join departamento d on e.id_departamento = d.id where e.nif = '38382980M';
+
+-- 6. Devuelve el nombre del departamento donde trabaja el empleado Pepe Ruiz Santana.
+
+select d.nombre from departamento d inner join empleado e on e.id_departamento = d.id where e.nombre = 'Pepe';
+
+-- 7. Devuelve un listado con los datos de los empleados que trabajan en el
+-- departamento de I+D. Ordena el resultado alfabéticamente.
+
+select e.*, d.nombre from empleado e inner join departamento d on e.id_departamento = d.id where d.nombre = 'I+D';
+
+-- 8. Devuelve un listado con los datos de los empleados que trabajan en el
+-- departamento de Sistemas, Contabilidad o I+D. Ordena el resultado alfabéticamente.
+
+select e.*, d.nombre from empleado e inner join departamento d on e.id_departamento = d.id 
+where d.nombre = 'I+D' or d.nombre = 'Sistemas' or d.nombre = 'Contabilidad' order by 2 asc;
+
+-- 9. Devuelve una lista con el nombre de los empleados que tienen los
+-- departamentos que no tienen un presupuesto entre 100000 y 200000 euros.
+
+
+
+-- 10. Devuelve un listado con el nombre de los departamentos donde existe algún empleado cuyo segundo 
+-- apellido sea NULL. Tenga en cuenta que no debe mostrar nombres de departamentos que estén repetidos.

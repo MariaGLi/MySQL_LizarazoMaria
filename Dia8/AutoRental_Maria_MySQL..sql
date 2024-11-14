@@ -8,7 +8,7 @@
  Ciudad varchar(45) NOT NULL,
  Direccion varchar(45) NOT NULL,
  Telefono_Fijo varchar(45) NOT NULL,
- Celular INT NOT NULL,
+ Celular varchar(45) NOT NULL,
  Email varchar(45) NOT NULL
 );
  
@@ -18,14 +18,15 @@
  Nombre2 varchar(45) NOT NULL,
  Apellido1 varchar(45) NOT NULL,
  Apellido2 varchar(45) NOT NULL,
- Cedula INT NOT NULL,
+ Cedula varchar(45) NOT NULL,
+ Celular varchar(45) NOT NULL,
  Direccion varchar(45) NOT NULL,
  Ciudad_Residencia varchar(45) NOT NULL,
- Celular INT NOT NULL,
  Email varchar(45),
  idSucursales INT,
  FOREIGN KEY (idSucursales) REFERENCES Sucursales (idSucursales)
 );
+SET FOREIGN_KEY_CHECKS=0;
 
 CREATE TABLE Clientes (
  idClientes INT PRIMARY KEY,
@@ -33,8 +34,8 @@ CREATE TABLE Clientes (
  Nombre2 varchar(45) NOT NULL,
  Apellido1 varchar(45) NOT NULL,
  Apellido2 varchar(45) NOT NULL,
- Celular INT NOT NULL,
- Cedula INT NOT NULL,
+ Cedula varchar(45) NOT NULL,
+ Celular varchar(45) NOT NULL,
  Direccion varchar(45) NOT NULL,
  Ciudad_Residencia varchar(45) NOT NULL,
  Email varchar(45),
@@ -47,6 +48,7 @@ idVehiculos INT PRIMARY KEY,
 Tipo_Vehiculo VARCHAR (45) NOT NULL,
 Modelo INT NOT NULL,
 Capacidad VARCHAR (45) NOT NULL,
+Placa VARCHAR (45) NOT NULL,
 Motor VARCHAR (45) NOT NULL,
 Sunroof VARCHAR (45) NOT NULL,
 Puertas INT NOT NULL,

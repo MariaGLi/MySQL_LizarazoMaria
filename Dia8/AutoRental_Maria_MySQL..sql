@@ -1,4 +1,5 @@
  DROP DATABASE IF EXISTS AutoRental_María;
+ 
  CREATE DATABASE AutoRental_María;
 
  USE AutoRental_María;
@@ -26,7 +27,6 @@
  idSucursales INT,
  FOREIGN KEY (idSucursales) REFERENCES Sucursales (idSucursales)
 );
-SET FOREIGN_KEY_CHECKS=0;
 
 CREATE TABLE Clientes (
  idClientes INT PRIMARY KEY,

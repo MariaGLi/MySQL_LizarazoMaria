@@ -1,5 +1,6 @@
 USE AutoRental_María;
 
+
 INSERT INTO Sucursales (idSucursales, Ciudad, Direccion, Telefono_Fijo, Celular, Email) VALUES
 (1, 'Bogotá', 'Carrera 50 # 45-30', '3112345678', 3001234567, 'bogota@sucursal.com'),
 (2, 'Medellín', 'Calle 80 # 45-10', '3123456789', 3012345678, 'medellin@sucursal.com'),

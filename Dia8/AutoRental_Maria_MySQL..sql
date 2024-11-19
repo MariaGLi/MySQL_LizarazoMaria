@@ -1,5 +1,5 @@
  DROP DATABASE IF EXISTS AutoRental_María;
- 
+
  CREATE DATABASE AutoRental_María;
 
  USE AutoRental_María;

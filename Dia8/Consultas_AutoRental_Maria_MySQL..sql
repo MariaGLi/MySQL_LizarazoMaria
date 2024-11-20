@@ -244,7 +244,7 @@ BEGIN
 END 
 // DELIMITER ;
 
-CALL InsertarCliente('José', 'Meleguindo', 'Al', 'Cuello', '245789512', '3081234567', 'Calle 6 # 1-26', 'Cúcuta', 'jose.al@empresa.com', '10');
+CALL InsertarCliente('José', 'Meleguindo', 'Al', 'Cuello', '245789512', '3081234567', 'Calle 6 # 1-26', 'Cúcuta', 'jose.al@empresa.com', '101');
 select * from clientes;
 
 -- 4. Insertar un nuevo vehículo.
@@ -268,28 +268,55 @@ END
 CALL InsertarVehiculo('SUV', '2020', '5 Personas', 'ABC123', 'V6', 'Sí', '4', 'Negro', 'Luxury', '101');
 select * from vehiculos;
 
--- 5. Insertar un nuevo alquiler.
+-- 5. Actualizar una ciudad de la sucursal.
 
-DELIMITER // 
-CREATE PROCEDURE InsertarAlquiler(in Fecha_Salida varchar(50),
-in Fecha_Llegada varchar(50),
-in Fecha_Esperada_Llegada varchar(50),
-in Valor_Alquiler_Semana varchar(50),
-in Valor_Alquiler_Dia varchar(50),
-in Valor_Cotizado varchar(50),
-in Valor_Pagado varchar(50),
-in idSucursales varchar(50),
-in idEmpleados varchar(50),
-in idSucursal_Llegada varchar(50),
-in idSucursal_Salida varchar(50),
-in idVehiculos varchar(50))
+DELIMITER //
+CREATE PROCEDURE ActualizarSucursal(idSucursales_s int, Ciudad_c varchar(45))
 BEGIN
-	insert into Alquileres (Fecha_Salida, Fecha_Llegada, Fecha_Esperada_Llegada, Valor_Alquiler_Semana, Valor_Alquiler_Dia, Valor_Cotizado, Valor_Pagado, idSucursales, idEmpleados, idSucursal_Llegada, idSucursal_Salida, idVehiculos) 
-    VALUES (Fecha_Salida, Fecha_Llegada, Fecha_Esperada_Llegada, Valor_Alquiler_Semana, Valor_Alquiler_Dia, Valor_Cotizado, Valor_Pagado, idSucursales, idEmpleados, idSucursal_Llegada, idSucursal_Salida, idVehiculos);
-END 
+	update Sucursales
+    set Ciudad = Ciudad_c
+    where idSucursales = idSucursales_s;
+END
 // DELIMITER ;
 
-CALL InsertarAlquiler('2024-01-17', '2024-01-27', '2024-01-24', 2000000, 230000, 1610000, 2300000, 7, 107, 17, 27, 101);
-select * from empleados;
+call ActualizarSucursal(1, 'Cúcuta');
+select * from Sucursales;
 
-drop procedure InsertarVehiculo;
+-- 5. Actualizar una sucursal.
+
+DELIMITER //
+CREATE PROCEDURE EliminarSucursal(in idSucursales_s int)
+BEGIN
+	delete from Retraso where idAlquileres in (select idSucursales from Alquileres where idSucursales = idSucursales_s);
+    delete from Alquileres where idSucursales = idSucursales_s;
+    delete from Descuentos where idAlquileres;
+	 
+	
+    
+    DELETE FROM Sucursales where idSucursales = idSucursales_s;
+    
+		
+        /*delete from Alquileres where idSucursales_Llegada = idSucursales_s;
+        delete from Alquileres where idSucursales_Salida = idSucursales_s;
+        delete from Empleados where idSucursales = idSucursales_s;*/
+END
+// DELIMITER ;
+
+call EliminarSucursal(1);
+select * from Sucursales;
+
+-- 6. Actualizar el Sunroof.
+
+DELIMITER //
+CREATE PROCEDURE ActualizarVehiculos(idVehiculos_s int, Sunroof_c varchar(45))
+BEGIN
+	update Vehiculos
+    set Sunroof = Sunroof_c
+    where idVehiculos = idVehiculos_s;
+END
+// DELIMITER ;
+
+call ActualizarVehiculos(1, 'No');
+select * from vehiculos;
+
+drop procedure EliminarSucursal;

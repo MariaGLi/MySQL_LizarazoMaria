@@ -184,3 +184,112 @@ select * from clientes;
 select * from alquileres;
 select * from descuentos;
 select * from sucursales;
+
+-- PROCEDIMIENTOS.
+-- 1. Insertar una nueva sucursal.
+
+DELIMITER // 
+CREATE PROCEDURE InsertarSucursal(in Ciudad varchar(50), 
+in Direccion varchar(50), 
+in Telefono_Fijo varchar(50),
+in  Celular varchar(50),
+in Email varchar(50))
+BEGIN
+	insert into sucursales (Ciudad, Direccion, Telefono_Fijo, Celular,Email) values (Ciudad, Direccion, Telefono_Fijo, Celular,Email);
+END 
+// DELIMITER ;
+
+CALL InsertarSucursal('Cúcuta', 'Carrera 7 # 27-05', '5662021024', '3180123456', 'cucuta11@sucursal.com');
+select * from sucursales;
+
+
+-- 2. Insertar un nuevo empleado.
+
+DELIMITER // 
+CREATE PROCEDURE InsertarEmpleado(in Nombre1 varchar(50), 
+in Nombre2 varchar(50), 
+in Apellido1 varchar(50), 
+in Apellido2 varchar(50), 
+in Cedula varchar(50), 
+in Celular varchar(50), 
+in Direccion varchar(50), 
+in Ciudad_Residencia varchar(50), 
+in Email varchar(50),
+idSucursales varchar(50))
+BEGIN
+	insert into Empleados (Nombre1, Nombre2, Apellido1, Apellido2, Cedula, Celular, Direccion, Ciudad_Residencia, Email, idSucursales) 
+    values (Nombre1, Nombre2, Apellido1, Apellido2, Cedula, Celular, Direccion, Ciudad_Residencia, Email, idSucursales);
+END 
+// DELIMITER ;
+
+CALL InsertarEmpleado('Gumercindo', 'Alfonso', 'Perez', 'Galvan', '123456789', '3051234567', 'Calle 3 # 6-23', 'Cúcuta', 'gumercindo.galvan@empresa.com', '10');
+select * from empleados;
+
+-- 3. Insertar un nuevo cliente.
+
+DELIMITER // 
+CREATE PROCEDURE InsertarCliente(in Nombre1 varchar(50), 
+in Nombre2 varchar(50), 
+in Apellido1 varchar(50), 
+in Apellido2 varchar(50), 
+in Cedula varchar(50), 
+in Celular varchar(50), 
+in Direccion varchar(50), 
+in Ciudad_Residencia varchar(50), 
+in Email varchar(50),
+idEmpleados varchar(50))
+BEGIN
+	insert into Clientes (Nombre1, Nombre2, Apellido1, Apellido2, Cedula, Celular, Direccion, Ciudad_Residencia, Email, idEmpleados) 
+    values (Nombre1, Nombre2, Apellido1, Apellido2, Cedula, Celular, Direccion, Ciudad_Residencia, Email, idEmpleados);
+END 
+// DELIMITER ;
+
+CALL InsertarCliente('José', 'Meleguindo', 'Al', 'Cuello', '245789512', '3081234567', 'Calle 6 # 1-26', 'Cúcuta', 'jose.al@empresa.com', '10');
+select * from clientes;
+
+-- 4. Insertar un nuevo vehículo.
+
+DELIMITER // 
+CREATE PROCEDURE InsertarVehiculo(in Tipo_Vehiculo varchar(50), 
+in Modelo varchar(50), 
+in Capacidad varchar(50),
+in Placa varchar(50),
+in Motor varchar(50),
+in Sunroof varchar(50),
+in Puertas varchar(50),
+in Color varchar(50),
+in Referencia varchar(50),
+in idClientes varchar(50))
+BEGIN
+	insert into vehiculos (Tipo_Vehiculo, Modelo, Capacidad, Placa, Motor, Sunroof, Puertas, Color, Referencia, idClientes) values (Tipo_Vehiculo, Modelo, Capacidad, Placa, Motor, Sunroof, Puertas, Color, Referencia, idClientes);
+END 
+// DELIMITER ;
+
+CALL InsertarVehiculo('SUV', '2020', '5 Personas', 'ABC123', 'V6', 'Sí', '4', 'Negro', 'Luxury', '101');
+select * from vehiculos;
+
+-- 5. Insertar un nuevo alquiler.
+
+DELIMITER // 
+CREATE PROCEDURE InsertarAlquiler(in Fecha_Salida varchar(50),
+in Fecha_Llegada varchar(50),
+in Fecha_Esperada_Llegada varchar(50),
+in Valor_Alquiler_Semana varchar(50),
+in Valor_Alquiler_Dia varchar(50),
+in Valor_Cotizado varchar(50),
+in Valor_Pagado varchar(50),
+in idSucursales varchar(50),
+in idEmpleados varchar(50),
+in idSucursal_Llegada varchar(50),
+in idSucursal_Salida varchar(50),
+in idVehiculos varchar(50))
+BEGIN
+	insert into Alquileres (Fecha_Salida, Fecha_Llegada, Fecha_Esperada_Llegada, Valor_Alquiler_Semana, Valor_Alquiler_Dia, Valor_Cotizado, Valor_Pagado, idSucursales, idEmpleados, idSucursal_Llegada, idSucursal_Salida, idVehiculos) 
+    VALUES (Fecha_Salida, Fecha_Llegada, Fecha_Esperada_Llegada, Valor_Alquiler_Semana, Valor_Alquiler_Dia, Valor_Cotizado, Valor_Pagado, idSucursales, idEmpleados, idSucursal_Llegada, idSucursal_Salida, idVehiculos);
+END 
+// DELIMITER ;
+
+CALL InsertarAlquiler('2024-01-17', '2024-01-27', '2024-01-24', 2000000, 230000, 1610000, 2300000, 7, 107, 17, 27, 101);
+select * from empleados;
+
+drop procedure InsertarVehiculo;

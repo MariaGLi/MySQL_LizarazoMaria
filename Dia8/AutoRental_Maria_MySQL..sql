@@ -5,7 +5,7 @@
  USE AutoRental_María;
 
  CREATE TABLE Sucursales (
- idSucursales INT PRIMARY KEY,
+ idSucursales INT PRIMARY KEY auto_increment,
  Ciudad varchar(45) NOT NULL,
  Direccion varchar(45) NOT NULL,
  Telefono_Fijo varchar(45) NOT NULL,
@@ -14,7 +14,7 @@
 );
  
  CREATE TABLE Empleados (
- idEmpleados INT PRIMARY KEY,
+ idEmpleados INT PRIMARY KEY auto_increment,
  Nombre1 varchar(45) NOT NULL,
  Nombre2 varchar(45) NOT NULL,
  Apellido1 varchar(45) NOT NULL,
@@ -29,7 +29,7 @@
 );
 
 CREATE TABLE Clientes (
- idClientes INT PRIMARY KEY,
+ idClientes INT PRIMARY KEY auto_increment,
  Nombre1 varchar(45) NOT NULL,
  Nombre2 varchar(45) NOT NULL,
  Apellido1 varchar(45) NOT NULL,
@@ -44,7 +44,7 @@ CREATE TABLE Clientes (
 );
 
 CREATE TABLE Vehiculos (
-idVehiculos INT PRIMARY KEY,
+idVehiculos INT PRIMARY KEY auto_increment,
 Tipo_Vehiculo VARCHAR (45) NOT NULL,
 Modelo INT NOT NULL,
 Capacidad VARCHAR (45) NOT NULL,
@@ -59,7 +59,7 @@ FOREIGN KEY (idClientes) REFERENCES Clientes (idClientes)
 );
 
 CREATE TABLE Alquileres (
-IdAlquileres INT PRIMARY KEY,
+IdAlquileres INT PRIMARY KEY auto_increment,
 Fecha_Salida DATE,
 Fecha_Llegada DATE,
 Fecha_Esperada_Llegada DATE,
@@ -80,7 +80,7 @@ FOREIGN KEY (idVehiculos) REFERENCES Vehiculos (idVehiculos)
 );
 
 CREATE TABLE Retraso(
-idRetraso INT PRIMARY KEY,
+idRetraso INT PRIMARY KEY auto_increment,
 Dias_Retraso INT NOT NULL,
 Porcentaje_Dias_Retraso VARCHAR (45) NOT NULL,
 idVehiculos INT,
@@ -90,7 +90,7 @@ FOREIGN KEY (idAlquileres) REFERENCES Alquileres (idAlquileres)
 );
 
 CREATE TABLE Descuentos(
-idDescuentos INT PRIMARY KEY,
+idDescuentos INT PRIMARY KEY auto_increment,
 Fecha_Inicio_Dto DATE,
 Fecha_Finalizacion_Dto DATE,
 Porcentaje_Descuento VARCHAR (45) NOT NULL,
